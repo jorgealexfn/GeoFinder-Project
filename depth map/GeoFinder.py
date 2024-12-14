@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 from scipy.interpolate import griddata
+from mpl_toolkits.mplot3d import Axes3D
 
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371.0
@@ -77,22 +78,20 @@ if dentro_da_area:
     print(f"Profundidade na posição mais próxima: {closest_depth:.2f} metros")
     print(f"Tempo decorrido: {fim - inicio:.2f} segundos")
 
-    # Plota os pontos usando contorno
+    # Plota os pontos usando contorno em 3D
     lons, lats, depths = zip(*dados)
     
     # Gera uma grade para interpolação
     lon_grid, lat_grid = np.meshgrid(np.linspace(min(lons), max(lons), 100), np.linspace(min(lats), max(lats), 100))
     depth_grid = griddata((lons, lats), depths, (lon_grid, lat_grid), method='cubic')
 
-    plt.figure(figsize=(10, 6))
-    contour = plt.contourf(lon_grid, lat_grid, depth_grid, cmap='viridis', levels=100)
-    plt.colorbar(contour, label='Profundidade (metros)')
-    plt.xlabel('Longitude')
-    plt.ylabel('Latitude')
-    plt.title('Mapa de Profundidade')
-
-    formatter = FuncFormatter(lambda x, pos: f'{x:.3f}')
-    plt.gca().xaxis.set_major_formatter(formatter)
-    plt.gca().yaxis.set_major_formatter(formatter)
+    fig = plt.figure(figsize=(12, 8))
+    ax = fig.add_subplot(111, projection='3d')
+    contour = ax.contour3D(lon_grid, lat_grid, depth_grid, 50, cmap='viridis')
+    fig.colorbar(contour, ax=ax, label='Profundidade (metros)')
+    ax.set_xlabel('Longitude')
+    ax.set_ylabel('Latitude')
+    ax.set_zlabel('Profundidade')
+    ax.set_title('Mapa de Profundidade 3D')
 
     plt.show()
