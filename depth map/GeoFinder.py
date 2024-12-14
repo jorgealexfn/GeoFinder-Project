@@ -1,7 +1,9 @@
 import math
 import time
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
+from scipy.interpolate import griddata
 
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371.0
@@ -16,11 +18,11 @@ def haversine(lat1, lon1, lat2, lon2):
     distance = R * c * 1000
     return distance
 
-def estah_dentro_área(lat, lon, lat_min, lon_min, lat_max, lon_max):
+def estah_dentro_area(lat, lon, lat_min, lon_min, lat_max, lon_max):
     return lat_min <= lat <= lat_max and lon_min <= lon <= lon_max
 
 def ler_arquivo(file_path):
-    with open('A1_CUBE_BNB.txt', 'r') as file:
+    with open(file_path, 'r') as file:
         dados = [linha.strip().split() for linha in file.readlines()]
         dados = [(float(lon), float(lat), float(prof)) for lon, lat, prof in dados]
         lat_min = min(dados, key=lambda x: x[1])[1]
@@ -29,7 +31,7 @@ def ler_arquivo(file_path):
         lon_max = max(dados, key=lambda x: x[0])[0]
     return dados, lat_min, lon_min, lat_max, lon_max
 
-def encontrar_posicao_mais_próxima(dados, lat, lon):
+def encontrar_posicao_mais_proxima(dados, lat, lon):
     min_distance = float('inf')
     closest_position = None
     closest_depth = None
@@ -56,7 +58,7 @@ lat = float(input("Digite a latitude: ").replace(',', '.'))
 lon = float(input("Digite a longitude: ").replace(',', '.'))
 
 # Verifica se o ponto está dentro da área e imprime o resultado
-dentro_da_area = estah_dentro_área(lat, lon, lat_min, lon_min, lat_max, lon_max)
+dentro_da_area = estah_dentro_area(lat, lon, lat_min, lon_min, lat_max, lon_max)
 print(f'O ponto está dentro da área? {dentro_da_area}')
 
 if dentro_da_area:
@@ -64,7 +66,7 @@ if dentro_da_area:
     inicio = time.time()
 
     # Chama a função e obtém o resultado
-    closest_position, min_distance, closest_depth = encontrar_posicao_mais_próxima(dados, lat, lon)
+    closest_position, min_distance, closest_depth = encontrar_posicao_mais_proxima(dados, lat, lon)
 
     # Mede o tempo após a chamada da função
     fim = time.time()
@@ -75,19 +77,22 @@ if dentro_da_area:
     print(f"Profundidade na posição mais próxima: {closest_depth:.2f} metros")
     print(f"Tempo decorrido: {fim - inicio:.2f} segundos")
 
-    # Plota os pontos
+    # Plota os pontos usando contorno
     lons, lats, depths = zip(*dados)
-    plt.scatter(lons, lats, c=depths, cmap='viridis')
-    plt.colorbar(label='Profundidade (metros)')
+    
+    # Gera uma grade para interpolação
+    lon_grid, lat_grid = np.meshgrid(np.linspace(min(lons), max(lons), 100), np.linspace(min(lats), max(lats), 100))
+    depth_grid = griddata((lons, lats), depths, (lon_grid, lat_grid), method='cubic')
+
+    plt.figure(figsize=(10, 6))
+    contour = plt.contourf(lon_grid, lat_grid, depth_grid, cmap='viridis', levels=100)
+    plt.colorbar(contour, label='Profundidade (metros)')
     plt.xlabel('Longitude')
     plt.ylabel('Latitude')
     plt.title('Mapa de Profundidade')
-    
-    plt.gca().invert_xaxis()
-    plt.gca().invert_yaxis()
-    
+
     formatter = FuncFormatter(lambda x, pos: f'{x:.3f}')
     plt.gca().xaxis.set_major_formatter(formatter)
     plt.gca().yaxis.set_major_formatter(formatter)
-    
+
     plt.show()
