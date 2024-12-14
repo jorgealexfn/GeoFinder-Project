@@ -1,24 +1,35 @@
-# python-Projects
+# GeoFinder - Análise de Profundidade Geográfica com Visualização 3D
 
- Descrição do Projeto:
-O projeto consiste em processar dados de um arquivo chamado “A1_CUBE_BNB.txt”, que contém informações sobre coordenadas geográficas (latitude, longitude) e profundidades.
-O objetivo é encontrar a posição mais próxima a partir das coordenadas fornecidas pelo usuário e calcular a distância até essa posição, bem como a profundidade associada.
+Descrição do Projeto:
 
-Funcionalidades do Projeto:
-Leitura do arquivo: O código lê o arquivo “A1_CUBE_BNB.txt” e extrai os dados relevantes.
-Cálculo da distância: Utiliza a fórmula de haversine para calcular a distância entre duas coordenadas geográficas.
-Determinação da posição mais próxima: Encontra a posição (latitude, longitude) mais próxima com base na distância calculada.
-Verificação da área: Verifica se as coordenadas fornecidas pelo usuário estão dentro da área delimitada pelos limites de latitude e longitude do conjunto de dados.
+Neste projeto, desenvolvi uma ferramenta de análise geográfica que lê dados de profundidade de um arquivo, calcula a distância entre coordenadas geográficas, determina a posição mais próxima a um ponto de interesse e visualiza os resultados em um gráfico 3D de contorno.
 
-Resultados:
-O programa imprime os limites de latitude e longitude do conjunto de dados.
-Verifica se o ponto fornecido pelo usuário está dentro da área.
-Se estiver dentro da área, calcula a posição mais próxima, a distância até essa posição e a profundidade associada.
-Exibe os resultados na saída padrão.
+Funcionalidades e Metodologia:
 
-Visualização Gráfica:
-O projeto também inclui uma visualização gráfica dos pontos no mapa.
-Os pontos representam as coordenadas geográficas do conjunto de dados, e a cor indica a profundidade associada.
+Leitura de Dados:
 
-Tempo de Execução:
-O tempo de execução é medido antes e após a chamada da função para encontrar a posição mais próxima.
+Utilizei Python para ler e processar dados de um arquivo de texto contendo coordenadas de latitude, longitude e profundidade.
+
+Os dados são organizados e os limites geográficos são determinados para posterior análise.
+
+Cálculo de Distâncias:
+
+Implementei a fórmula de Haversine para calcular a distância entre dois pontos na superfície terrestre.
+
+Isso permite encontrar a posição mais próxima de um ponto fornecido pelo usuário.
+
+Determinação da Posição Mais Próxima:
+
+A ferramenta compara o ponto de interesse fornecido pelo usuário com todos os pontos do conjunto de dados para identificar a posição mais próxima e sua profundidade associada.
+
+Visualização com Gráfico 3D:
+
+Utilizei as bibliotecas Matplotlib e NumPy para criar uma visualização 3D das profundidades.
+
+A interpolação de dados é realizada para gerar um gráfico de contorno suave, permitindo uma melhor visualização das variações de profundidade.
+
+O gráfico 3D é interativo, permitindo uma análise mais detalhada dos dados geográficos.
+
+Aplicações Práticas: Esta ferramenta pode ser aplicada em várias áreas, como estudos ambientais, planejamento urbano, pesquisas oceanográficas e qualquer cenário onde a análise de profundidade geográfica seja necessária. A visualização em 3D facilita a compreensão das variações topográficas e pode apoiar a tomada de decisões informadas.
+
+Conclusão: Este projeto demonstra uma integração eficiente de processamento de dados geográficos e visualização avançada, proporcionando uma ferramenta robusta para análise e interpretação de dados de profundidade.
