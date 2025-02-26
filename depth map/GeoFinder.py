@@ -48,7 +48,7 @@ def encontrar_posicao_mais_proxima(dados, lat, lon):
     return closest_position, min_distance, closest_depth
 
 # Lê o arquivo e obtém os dados
-dados, lat_min, lon_min, lat_max, lon_max = ler_arquivo('A1_CUBE_BNB.txt')
+dados, lat_min, lon_min, lat_max, lon_max = ler_arquivo('Datas_Received.txt')
 
 # Imprime os limites de latitude e longitude
 print(f'Latitude mínima: {lat_min}, Longitude mínima: {lon_min}')
